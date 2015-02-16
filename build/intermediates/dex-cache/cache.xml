@@ -22,5 +22,12 @@
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
         <dex dex="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-b0d531591f4dff4c974fb4a787aadf150e6b5c18.jar" />
     </item>
+    <item
+        jar="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\classes-b3436ab21a46e49d2802dcbfaff3b3d7b660dee5.jar" />
+    </item>
 
 </items>

@@ -18,6 +18,7 @@ import android.location.Address;
 
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnItemSelectedListener {
     Spinner spinner;
-    Location location;
+    Location location = null;
 
 
     @Override
@@ -60,7 +61,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 
     }
 
-    class getLocationAsyc extends AsyncTask<Void, Void, String[]> {
+    class getLocationAsyncTask extends AsyncTask<Void, Void, String[]> {
 
         @SuppressLint("ShowToast")
 
@@ -81,19 +82,20 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
                             for (int i = 0; i < addresses.size(); i++) {
                                 Address address = addresses.get(i);
                                 StringBuilder strReturnedAddress = new StringBuilder();
+
                                 int n = address.getMaxAddressLineIndex();
                                 for (int a = 0; a <= n; a++) {
                                     strReturnedAddress.append(
                                             address.getAddressLine(a)).append(
                                             ",");
-
                                 }
                                 ;
                                 locationString[i] = strReturnedAddress.toString();
                             }
                             ;
                         } else {
-                            Toast.makeText(getApplicationContext(), "Can't get address", Toast.LENGTH_SHORT);
+
+                            showToastInAsync("Can't get address");
 
 
                         }
@@ -106,8 +108,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
                     e.printStackTrace();
                 }
             } else {
-                //Toast.makeText(getApplicationContext(), "Can't get location",Toast.LENGTH_SHORT );
-
+                showToastInAsync("Can't get coordinates");
             }
 
             return locationString;
@@ -116,33 +117,84 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
     }
 
     private Location bestLastKnownLocation() {
-
+        Boolean isWifiEnable = false;
+        Boolean isGPSEnable = false;
+        Location location1 = null;
+        // Acquire a reference to the system Location Manager
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//		Criteria criteria = new Criteria();
-        // String provider = lm.getBestProvider(criteria, false);
-        Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+    //    location1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        isGPSEnable = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isWifiEnable = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        // Define a listener that responds to location updates
+        LocationListener locationListener= new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+               // makeUseOfNewLocation(location);
+            }
 
-        return location;
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (isGPSEnable == false && isWifiEnable == false) {
+            // no network provider is enabled
+            showToastInAsync("No provider");
+        } else {
+            if(isWifiEnable) {
+                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+                location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Log.d("Network", "Network");
+            }else {
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener);
+                location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Log.d("GPS", "GPS");
+            }
+        }
+        lm.removeUpdates(locationListener);
+        return location1;
     }
 
     public void getAddress(View view) {
         location = bestLastKnownLocation();
-        String[] test = {"a", "b", "c", "d"};
+        String[] test = {};
 
         try {
-            test = new getLocationAsyc().execute().get();
+            test = new getLocationAsyncTask().execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        boolean value = false;
+        for (int i=0; i<test.length; i++) {
+            if (test[i] != null) {
+                value = false;
+                break;
+            }
+        }
 
+        if (value) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, test);
+            // Apply the adapter to the spinner
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, test);
-        // Apply the adapter to the spinner
-
-        spinner.setAdapter(adapter);
-        getNotification();
+            spinner.setAdapter(adapter);
+            getNotification();
+        }else {
+            showToastInAsync("no address");
+        }
 
     }
 
@@ -175,5 +227,15 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
         mNotificationManager.notify(1, mBuilder.build());
+    }
+
+    private void showToastInAsync(final String toast) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
