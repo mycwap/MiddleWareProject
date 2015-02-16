@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-f3a7fce6b323347b677ea6173c34d16e5dadec1d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\classes-e00d9c3581d4b5f53989fbecd8e24c1e10b9d82d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Miao\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-b0d531591f4dff4c974fb4a787aadf150e6b5c18.jar" />
+    </item>
+
+</items>

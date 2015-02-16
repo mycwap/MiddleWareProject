@@ -1,0 +1,4 @@
+C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\classes\debug
+C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-b0d531591f4dff4c974fb4a787aadf150e6b5c18.jar
+C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-f3a7fce6b323347b677ea6173c34d16e5dadec1d.jar
+C:\Users\Miao\AndroidStudioProjects\MiddleWareProject\app\build\intermediates\pre-dexed\debug\classes-e00d9c3581d4b5f53989fbecd8e24c1e10b9d82d.jar
