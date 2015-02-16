@@ -36,8 +36,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
     Spinner spinner;
     Location location;
 
-    //	   private Context context = this;
-//	   private NotificationManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +50,13 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
                                long arg3) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
@@ -99,7 +98,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 
                         }
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
+
                         e.printStackTrace();
                     }
                 } catch (Exception e) {
