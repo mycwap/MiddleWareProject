@@ -36,6 +36,9 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnItemSelectedListener {
     Spinner spinner;
     Location location = null;
+    Boolean isWifiEnable ;
+    Boolean isGPSEnable ;
+    LocationService locationService;
 
 
     @Override
@@ -44,7 +47,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
         setContentView(R.layout.activity_main);
         spinner = (Spinner) findViewById(R.id.spinner1);
         spinner.setOnItemSelectedListener(this);
-
+        locationService=new LocationService(MainActivity.this);
 
     }
 
@@ -61,12 +64,15 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 
     }
 
+
+
     class getLocationAsyncTask extends AsyncTask<Void, Void, String[]> {
 
         @SuppressLint("ShowToast")
 
         @Override
         protected String[] doInBackground(Void... params) {
+
 
             String[] locationString = new String[5];
 
@@ -116,59 +122,10 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 
     }
 
-    private Location bestLastKnownLocation() {
-        Boolean isWifiEnable = false;
-        Boolean isGPSEnable = false;
-        Location location1 = null;
-        // Acquire a reference to the system Location Manager
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-    //    location1 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        isGPSEnable = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        isWifiEnable = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        // Define a listener that responds to location updates
-        LocationListener locationListener= new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-               // makeUseOfNewLocation(location);
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        if (isGPSEnable == false && isWifiEnable == false) {
-            // no network provider is enabled
-            showToastInAsync("No provider");
-        } else {
-            if(isWifiEnable) {
-                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-                location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                Log.d("Network", "Network");
-            }else {
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener);
-                location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                Log.d("GPS", "GPS");
-            }
-        }
-        lm.removeUpdates(locationListener);
-        return location1;
-    }
 
     public void getAddress(View view) {
-        location = bestLastKnownLocation();
+
+        location=locationService.getLocation();
         String[] test = {};
 
         try {
@@ -178,15 +135,10 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        boolean value = false;
-        for (int i=0; i<test.length; i++) {
-            if (test[i] != null) {
-                value = false;
-                break;
-            }
-        }
 
-        if (value) {
+
+
+        if (test.length>0) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, test);
             // Apply the adapter to the spinner
 
@@ -229,7 +181,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
         mNotificationManager.notify(1, mBuilder.build());
     }
 
-    private void showToastInAsync(final String toast) {
+    public void showToastInAsync(final String toast) {
         runOnUiThread(new Runnable() {
 
             @Override
